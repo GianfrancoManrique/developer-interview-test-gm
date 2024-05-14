@@ -13,7 +13,7 @@ namespace Smartwyre.DeveloperTest.MockData
         {
             new Product() { Id = 1, Identifier = "p1", Price = 10, Uom = "uom1", SupportedIncentives = SupportedIncentiveType.AmountPerUom },
             new Product() { Id = 2, Identifier = "p2", Price = 20, Uom = "uom2", SupportedIncentives = SupportedIncentiveType.FixedCashAmount },
-            new Product() { Id = 3, Identifier = "p3", Price = 20, Uom = "uom3", SupportedIncentives = SupportedIncentiveType.FixedRateRebate }
+            new Product() { Id = 3, Identifier = "p3", Price = 30, Uom = "uom3", SupportedIncentives = SupportedIncentiveType.FixedRateRebate }
         };
     }
 }

@@ -10,6 +10,6 @@ namespace Smartwyre.DeveloperTest.Repositories
     public interface IRebateRepository
     {
         Rebate GetRebate(string rebateIdentifier);
-        void StoreCalculationResult(Rebate account, decimal rebateAmount);
+        Rebate StoreCalculation(Rebate account, decimal rebateAmount);
     }
 }

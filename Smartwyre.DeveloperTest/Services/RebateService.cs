@@ -41,6 +41,8 @@ public class RebateService : IRebateService
 
                 rebateAmount = rebate.Amount;
                 result.Success = true;
+                result.RebateAmount = rebateAmount;
+                result.Rebate = rebate;
 
                 break;
 
@@ -55,6 +57,8 @@ public class RebateService : IRebateService
 
                 rebateAmount += product.Price * rebate.Percentage * request.Volume;
                 result.Success = true;
+                result.RebateAmount = rebateAmount;
+                result.Rebate = rebate;
 
                 break;
 
@@ -68,15 +72,21 @@ public class RebateService : IRebateService
 
                 rebateAmount += rebate.Amount * request.Volume;
                 result.Success = true;
+                result.RebateAmount = rebateAmount;
+                result.Rebate = rebate;
 
                 break;
         }
 
-        if (result.Success)
-        {
-            _rebateRepository.StoreCalculationResult(rebate, rebateAmount);
-        }
-
         return result;
+    }
+
+    public Rebate StoreCalculation(CalculateRebateResult rebateResult)
+    {
+        if (rebateResult.Rebate == null)
+        {
+            return null;
+        }
+        return _rebateRepository.StoreCalculation(rebateResult.Rebate, rebateResult.RebateAmount);
     }
 }

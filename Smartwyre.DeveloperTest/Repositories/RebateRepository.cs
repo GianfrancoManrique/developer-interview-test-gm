@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
 namespace Smartwyre.DeveloperTest.Repositories
 {
     public class RebateRepository : IRebateRepository
@@ -16,12 +14,12 @@ namespace Smartwyre.DeveloperTest.Repositories
             return result;
         }
 
-        public void StoreCalculationResult(Rebate account, decimal rebateAmount)
+        public Rebate StoreCalculation(Rebate account, decimal rebateAmount)
         {
-            account.Amount = rebateAmount;
-            List<Rebate> rebates = RebateMockData.Rebates;
-            rebates.Add(account);
-            Console.WriteLine(account.Amount.ToString());
+            var rebate = RebateMockData.Rebates.FirstOrDefault(p => p.Identifier == account.Identifier);
+            rebate.Amount = rebateAmount;
+
+            return rebate;
         }
     }
 }
