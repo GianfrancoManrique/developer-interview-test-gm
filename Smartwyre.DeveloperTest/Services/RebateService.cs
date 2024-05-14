@@ -25,6 +25,7 @@ public class RebateService : IRebateService
         if (rebate == null)
         {
             result.Success = false;
+            result.Message = "Rebate was not found";
             return result;
         }
 
@@ -36,13 +37,11 @@ public class RebateService : IRebateService
                 if (invalidFixedCashAmount)
                 {
                     result.Success = false;
+                    result.Message = "Invalid fixed cash amount for rebate";
                     return result;
                 }
 
                 rebateAmount = rebate.Amount;
-                result.Success = true;
-                result.RebateAmount = rebateAmount;
-                result.Rebate = rebate;
 
                 break;
 
@@ -52,13 +51,11 @@ public class RebateService : IRebateService
                 if (invalidFixedRateRebate)
                 {
                     result.Success = false;
+                    result.Message = "Invalid fixed rate for rebate";
                     return result;
                 }
 
                 rebateAmount += product.Price * rebate.Percentage * request.Volume;
-                result.Success = true;
-                result.RebateAmount = rebateAmount;
-                result.Rebate = rebate;
 
                 break;
 
@@ -67,16 +64,19 @@ public class RebateService : IRebateService
                 if (invalidAmountPerUom)
                 {
                     result.Success = false;
+                    result.Message = "Invalid amount for rebate";
                     return result;
                 }
 
                 rebateAmount += rebate.Amount * request.Volume;
-                result.Success = true;
-                result.RebateAmount = rebateAmount;
-                result.Rebate = rebate;
 
                 break;
         }
+
+        result.Success = true;
+        result.Message = $"Rebate calculation was successfull: {rebateAmount}";
+        result.RebateAmount = rebateAmount;
+        result.Rebate = rebate;
 
         return result;
     }

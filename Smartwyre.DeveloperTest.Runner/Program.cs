@@ -18,22 +18,55 @@ class Program
           .BuildServiceProvider();
 
         var service = serviceProvider.GetService<IRebateService>();
-        CalculateRebateRequest request = new CalculateRebateRequest
-        {
-            RebateIdentifier = "r1",
-            ProductIdentifier = "p1",
-            Volume = 5
-        };
 
-        var calculateResult = service.Calculate(request);
-        string message = "Rebate calculation fails";
+        bool continueExecuting = true;
 
-        if (calculateResult.Success)
+        while (continueExecuting)
         {
-            var storeResult = service.StoreCalculation(calculateResult);
-            message = $"Rebate calculation / saving was successfull: {storeResult?.Amount}";
+            string message = "Invalid inputs";
+
+            Console.Clear();
+
+            Console.WriteLine("Enter your rebate identifier:");
+            string rebateIdentifier = Console.ReadLine();
+
+            Console.WriteLine("Enter your product identifier:");
+            string productIdentifier = Console.ReadLine();
+
+            Console.WriteLine("Enter your volume:");
+            string _volume = Console.ReadLine();
+            decimal volume = 0;
+
+            bool validInputs = !string.IsNullOrEmpty(rebateIdentifier) && !string.IsNullOrEmpty(productIdentifier) && Decimal.TryParse(_volume, out volume);
+            if (validInputs)
+            {
+                CalculateRebateRequest request = new CalculateRebateRequest
+                {
+                    RebateIdentifier = rebateIdentifier,
+                    ProductIdentifier = productIdentifier,
+                    Volume = volume
+                };
+
+                var calculateResult = service.Calculate(request);
+                message = calculateResult.Message;
+
+                if (calculateResult.Success)
+                {
+                    var storeResult = service.StoreCalculation(calculateResult);
+                    message = $"Rebate calculation / saving was successfull: {storeResult?.Amount}";
+                }
+            }
+
+            Console.WriteLine($"Message: {message}");
+
+            Console.WriteLine("Do you want to calculate another rebate? (y/n): ");
+
+            string response = Console.ReadLine().Trim().ToLower();
+
+            if (response != "y")
+            {
+                continueExecuting = false;
+            }
         }
-
-        Console.WriteLine(message);
     }
 }
